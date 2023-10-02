@@ -1,0 +1,40 @@
+<html>
+<head>
+<body>
+<h1>File Download Application</h1>
+Click <a href="FileDownloadServlet?filename=SampleChapter.pdf">Sample Chapter</a>
+<br/><br/>
+Click <a href="FileDownloadServlet?filename=TOC.pdf">Table Of Contents</a>
+</body>
+</html>
+
+
+
+FileDownloadServlet.java
+import java.io.*;
+import javax.servlet.*;
+
+
+import javax.servlet.http.*;
+public class FileDownloadServlet extends HttpServlet
+{
+@Override
+public void doGet(HttpServletRequest request, HttpServletResponse response)
+throws ServletException, IOException
+{
+response.setContentType("APPLICATION/OCTET-STREAM");
+String filename = request.getParameter("filename");
+ServletContext context = getServletContext();
+InputStream is = context.getResourceAsStream("/" + filename);
+ServletOutputStream os = response.getOutputStream();
+response.setHeader("Content-Disposition","attachment; filename=\"" + filename + "\"");
+int i;
+byte b[]=new byte[1024];
+while ((i=is.read(b)) != -1)
+{
+os.write(b);
+}
+is.close();
+os.close();
+}
+}
