@@ -1,0 +1,64 @@
+index.html:
+<!DOCTYPE html>
+<html>
+<head>
+<title>TODO supply a title</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+<form method="post" action="UserAuth.java">
+Enter Username:<input type="Text" name="txtuname"><br>
+Enter Password:<input type="Password" name="txtpass"><br>
+<input type="submit" name="submit" value="Submit">
+</form>
+</body>
+</html>
+
+UserAuth.java:
+import java.io.IOException;
+import java.io.PrintWriter;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.sql.*;
+public class UserAuth extends HttpServlet {
+@Override
+protected void doPost(HttpServletRequest request, HttpServletResponse response)
+throws ServletException, IOException {
+response.setContentType("text/html;charset=UTF-8");
+try (PrintWriter out = response.getWriter()) {
+Connection con=null;
+Statement stmt=null;
+ResultSet rs=null;
+String n="",p="";
+int cnt=0;
+n=request.getParameter("txtuname");
+p=request.getParameter("txtpass");
+try{
+Class.forName("com.mysql.jdbc.Driver");
+con=DriverManager.getConnection("jdbc:mysql://localhost:3306/userdb1","root","");
+stmt=con.createStatement();
+rs=stmt.executeQuery("select * from user");
+while(rs.next())
+{
+String un=rs.getString(1);
+String up=rs.getString(2);
+if(n.equals(un) && p.equals(up))
+{
+out.println("<h1>+Welcome!!!"+un+"</h1>");
+cnt++;
+break;
+}
+if(cnt==0)
+{
+out.println("Sorry!! you have entered wrong credentials");
+}
+}
+}
+catch(Exception e)
+{
+}
+}
+}}
