@@ -1,0 +1,79 @@
+<html>
+<head>
+<title>TODO supply a title</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+<form method="POST" action="MultiValued">
+Enter Name:<input type="text" name="Name"/><br/>
+Enter Password:<input type="password" name="Password"><br/>
+Gender:
+<input type="radio" name="Gender" value="Male">Male
+<input type="radio" name="Gender" value="Female">Female<br/>
+Date of birth:<input type="text" name="DOB"/><br/>
+Hobbies:<br/>
+<input type="text" name="Hobbies" value="Reading"/>Reading<br/>
+<input type="text" name="Hobbies" value="Singing"/>Singing<br/>
+<input type="text" name="Hobbies" value="Dancing"/>Dancing<br/>
+City:
+<select name="City" >
+<option value="">Select:</option>
+<option value="Mumbai">Mumbai</option>
+<option value="Dombivali">Dombivali</option>
+<option value="Borivali">Borivali</option>
+</select><br/>
+<input type="submit" value="Register"/>&nbsp;&nbsp;&nbsp;&nbsp;
+<input type="Reset" value="Reset"/><br/>
+</form>
+</body>
+</html>
+
+
+
+
+
+MultiValued.java
+import java.io.*;
+import javax.servlet.ServletException;
+import javax.servlet.http.*;
+import java.util.*;
+public class MultiValued extends HttpServlet {
+@Override
+protected void doPost(HttpServletRequest request, HttpServletResponse response)
+throws ServletException, IOException {
+response.setContentType("text/html;charset=UTF-8");
+try (PrintWriter out = response.getWriter()) {
+Enumeration paraNames=request.getParameterNames();
+while(paraNames.hasMoreElements())
+{
+String name=(String)paraNames.nextElement();
+out.println("<h1>"+name+":");
+String[] paraValues=request.getParameterValues(name);
+//read single valued data
+if(paraValues.length==1)
+{
+String paraValue=paraValues[0];
+if(paraValue.length()==0)
+{
+out.print("<i> No Value</i>");
+}
+else
+{
+out.print(paraValue);
+}
+}
+else
+{
+//read multiple value data
+for(int i=0;i<paraValues.length;i++)
+{
+out.print(paraValues[i]+"");
+}
+}
+
+
+}
+}
+}
+}
