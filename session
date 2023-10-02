@@ -1,0 +1,38 @@
+//HttpSessionServlet.java
+import java.io.IOException;
+import java.io.PrintWriter;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+public class HttpSessionServlet extends HttpServlet {
+private int counter;
+@Override
+protected void doGet(HttpServletRequest request, HttpServletResponse response)
+throws ServletException, IOException {
+response.setContentType("text/html;charset=UTF-8");
+try (PrintWriter out = response.getWriter()) {
+HttpSession session= request.getSession(true);
+if(session.isNew())
+
+
+{
+out.print("This is the first time you visit this page");
+++counter;
+}
+else
+{
+synchronized(HttpSessionServlet.this)
+{
+if(counter==10)
+{
+session.invalidate();
+counter=0;
+request.getSession(false);
+}
+else
+out.print("you have visited this page "+(++counter)+"Times");
+}
+}}}
+}
