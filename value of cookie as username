@@ -1,0 +1,67 @@
+Index.html
+<html>
+<head>
+<title>TODO supply a title</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+<div>TODO write content</div>
+<form action="AddCookieServlet" method="post">
+Name:<input type="text" name="userName"/></br>
+<input type="submit" value="go"/>
+</form>
+</body>
+</html>
+
+AddCookieServlet.java
+package CookieServlet;
+import java.io.IOException;
+import java.io.PrintWriter;
+import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+public class AddCookieServlet extends HttpServlet {
+@Override
+protected void doPost(HttpServletRequest request, HttpServletResponse response)
+throws ServletException, IOException {
+response.setContentType("text/html;charset=UTF-8");
+try (PrintWriter out = response.getWriter()) {
+String n=request.getParameter("userName");
+out.print("Welcome "+n);
+Cookie ck=new Cookie("uname",n);
+response.addCookie(ck);
+out.print("<form action='GetCookie'>");
+out.print("<input type='submit' value='go'>");
+out.print("</form>");
+out.close();
+
+T.Y.B.Sc(I.T)-SEM 5 Enterprise Java Roll No.102
+Raj Singh
+
+}
+}
+}
+GetCookie.java
+import java.io.*;
+import javax.servlet.http.*;
+public class GetCookie extends HttpServlet
+{
+@Override
+public void doPost(HttpServletRequest request, HttpServletResponse response){
+try
+{
+response.setContentType("text/html");
+PrintWriter out = response.getWriter();
+Cookie ck[]=request.getCookies();
+out.print("Hello "+ck[0].getValue());
+out.close();
+}
+catch(Exception e)
+{
+System.out.println(e);
+}
+}
+}
