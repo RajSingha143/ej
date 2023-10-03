@@ -1,0 +1,73 @@
+index.html
+<html>
+<head>
+<title>TODO supply a title</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+<form action="CalciServlet">
+Enter First Number: <input type="text" name="num1"><br>
+Enter Second Number: <input type="text" name="num2"><br>
+Select Operation:<br>
+<input type="radio" name="type" value="add" checked>Addition<br>
+<input type="radio" name="type" value="sub" checked>Subtraction<br>
+<input type="radio" name="type" value="multi" checked>Multiplication<br>
+<input type="radio" name="type" value="div" checked>Division<br>
+<input type="reset" ><input type="submit" value="CALCULATE" >
+</form>
+</body>
+</html>
+
+
+
+CalciBean.java
+package mybean;
+import javax.ejb.Stateless;
+@Stateless
+public class CalciBean {
+public int add(int n1, int n2) { return(n1+n2); }
+public int sub(int n1, int n2) { return(n1-n2); }
+public int multi(int n1, int n2) { return(n1*n2); }
+public int div(int n1, int n2) { return(n1/n2); }
+}
+CalciServlet.java
+package mypack;
+import java.io.IOException;
+import java.io.PrintWriter;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.ejb.EJB;
+import mybean.CalciBean;
+public class CalciServlet extends HttpServlet {
+@EJB CalciBean obj;
+@Override
+protected void doGet(HttpServletRequest request, HttpServletResponse response)
+throws ServletException, IOException {
+response.setContentType("text/html;charset=UTF-8");
+try (PrintWriter out = response.getWriter()) {
+
+
+int num1 = Integer.parseInt(request.getParameter("num1"));
+int num2 = Integer.parseInt(request.getParameter("num2"));
+if(request.getParameter("type").equals("add"))
+{
+out.println("<h1>Addition = "+obj.add(num1,num2)+"</h1>");
+}
+if(request.getParameter("type").equals("sub"))
+{
+out.println("<h1>Subtraction = "+obj.sub(num1,num2)+"</h1>");
+}
+if(request.getParameter("type").equals("multi"))
+{
+out.println("<h1>Multiplication = "+obj.multi(num1,num2)+"</h1>");
+}
+if(request.getParameter("type").equals("div"))
+{
+out.println("<h1>Division = "+obj.div(num1,num2)+"</h1>");
+}
+}
+}
+}
