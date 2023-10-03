@@ -38,8 +38,6 @@ out.print("<input type='submit' value='go'>");
 out.print("</form>");
 out.close();
 
-T.Y.B.Sc(I.T)-SEM 5 Enterprise Java Roll No.102
-Raj Singh
 
 }
 }
