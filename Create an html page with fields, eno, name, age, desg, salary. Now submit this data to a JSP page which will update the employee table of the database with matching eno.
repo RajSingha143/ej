@@ -1,0 +1,67 @@
+index.html
+<html>
+<head>
+<title>TODO supply a title</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+<form action="UpdateEmp.jsp">
+Enter Employee Number: <input type="text" name="txtEno"><br>
+Enter Name: <input type="text" name="txtName"><br>
+Enter Age: <input type="text" name="txtAge"><br>
+Enter Salary <input type="text" name="txtSal"><br>
+<input type="reset"><input type="submit">
+</form>
+</body>
+</html>
+
+
+
+UpdateEmp.java
+<%@page contentType="text/html" pageEncoding="UTF-8" import="java.sql.*"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Update Employee</title>
+</head>
+<body>
+<h1> Employee Record Update </h1>
+<%
+String eno=request.getParameter("txtEno");
+String name=request.getParameter("txtName");
+String age=request.getParameter("txtAge");
+String sal=request.getParameter("txtSal");
+try
+{
+Class.forName("com.mysql.jdbc.Driver");
+Connection
+con=DriverManager.getConnection("jdbc:mysql://localhost:3306/logindb","root","root");
+PreparedStatement pstmt=con.prepareStatement("select *from emp where empid=?");
+pstmt.setString(1,eno);
+ResultSet rs=pstmt.executeQuery();
+if(rs.next())
+{
+out.println("<h1> ~~~~ Employee "+name+" Exist ~~~~</h1>");
+PreparedStatement pst1=con.prepareStatement("Update emp set salary=? where empid=?");
+PreparedStatement pst2= con.prepareStatement("update emp set age=? where empid=?");
+PreparedStatement pst3=con.prepareStatement("Update emp set ename=? where empid=?");
+pst1.setString(1,sal);
+pst1.setString(2,eno);
+pst2.setString(1,age);
+pst2.setString(2,eno);
+pst3.setString(1,name);
+pst3.setString(2,eno);
+pst1.executeUpdate();
+pst2.executeUpdate();
+pst3.executeUpdate();
+}
+else
+{
+out.println("<h1> Employee Record does not exist!!!</h1>");
+}
+}catch(Exception e) { out.println(e);}
+%>
+</body>
+</html>
